@@ -18,6 +18,9 @@ function cargarEventListeners() {
     destino.addEventListener('blur', validarForm);
     asunto.addEventListener('blur', validarForm);
     mensaje.addEventListener('blur', validarForm);
+
+    //Validar email
+    // destino.addEventListener('input', validarEmail);
 }
 
 function iniciarApp() {
@@ -35,15 +38,25 @@ function validarForm(e) {
         console.log( input );
     } else {
         e.target.classList.add('border', 'border-red-500')
-        mostrarError();
+        mostrarError('Todos los campos deben ser rellenados');
     }
 }
 
-function mostrarError() {
+// function validarEmail(e) {
+//     const [...correoIngresado] = e.target.value;
+
+//     if( correoIngresado.includes('@') || correoIngresado.includes('.com', '.cl')) {
+//         console.log('correo valido')
+//     } else {
+//         console.log('no es valido')
+//     }
+// }
+
+function mostrarError( mensaje ) {
 
 
     const mensajeError = document.createElement('P'); 
-    mensajeError.textContent = "Todos los campos deben ser rellenados.";
+    mensajeError.textContent = mensaje;
     mensajeError.classList.add( 'border', 'border-red-500', 'background-red-100','text-red-500', 'text-center', 'p-3', 'mt-5', 'error');
 
     const errores = document.querySelectorAll('.error');
