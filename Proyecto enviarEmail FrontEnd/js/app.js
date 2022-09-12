@@ -20,37 +20,64 @@ function cargarEventListeners() {
     mensaje.addEventListener('blur', validarForm);
 
     //Validar email
-    // destino.addEventListener('input', validarEmail);
+    destino.addEventListener('input', validarEmail);
 }
 
 function iniciarApp() {
+
     btnEnviar.disabled = true; 
     btnEnviar.classList.add('cursor-not-allowed', 'opacity-50')
-
-
+    
 }
 
 function validarForm(e) {
     
     const input = e.target.value;
 
-    if( input ) {
-        console.log( input );
+    if( input.length > 0 ) {
+
+        //Elimina los errores
+        const error = document.querySelector('p.error');
+        if( error ) {
+            error.remove();
+        }
+
+        e.target.classList.remove('border', 'border-red-500');   
+        e.target.classList.add('border', 'border-green-500');   //borde del input color verde  
+
     } else {
-        e.target.classList.add('border', 'border-red-500')
+        e.target.classList.remove('border', 'border-green-500');   
+        e.target.classList.add('border', 'border-red-500');         //borde del input color rojo  
         mostrarError('Todos los campos deben ser rellenados');
     }
+
+    
 }
 
-// function validarEmail(e) {
-//     const [...correoIngresado] = e.target.value;
+function validarEmail(e) {
+    if( e.target.type === 'email' ) {
 
-//     if( correoIngresado.includes('@') || correoIngresado.includes('.com', '.cl')) {
-//         console.log('correo valido')
-//     } else {
-//         console.log('no es valido')
-//     }
-// }
+        //Usando expresion regular
+        const expRegular = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        const correoIngresado = e.target.value;
+
+        if( expRegular.test( correoIngresado ) ) {    //verifica si lo ingresado es valido por la expRegular
+            //Elimina los errores
+            const error = document.querySelector('p.error');
+            if( error ) {
+                error.remove();
+            }
+
+            e.target.classList.remove('border', 'border-red-500');   
+            e.target.classList.add('border', 'border-green-500');   //borde del input color verde  
+
+        } else {
+            e.target.classList.remove('border', 'border-green-500');   
+            e.target.classList.add('border', 'border-red-500');     //borde del input color rojo  
+            mostrarError('Email no válido.');
+        }
+    }
+}
 
 function mostrarError( mensaje ) {
 
