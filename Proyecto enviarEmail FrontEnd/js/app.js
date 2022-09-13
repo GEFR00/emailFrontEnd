@@ -2,12 +2,12 @@
 const formularioBody = document.querySelector('#enviar-mail');
 const btnEnviar = document.querySelector('#enviar');
 const btnVaciarForm = document.querySelector('#resetBtn');
+let estadoMail = '';
 
 //Variables inputs
 const destino = document.querySelector('#email');
 const asunto = document.querySelector('#asunto');
 const mensaje = document.querySelector('#mensaje');
-
 
 cargarEventListeners();
 
@@ -20,20 +20,24 @@ function cargarEventListeners() {
     mensaje.addEventListener('blur', validarForm);
 
     //Validar email
-    destino.addEventListener('input', validarEmail);
+    destino.addEventListener('blur', validarEmail);
+
+    //Vaciar formulario
+    btnVaciarForm.addEventListener('click', vaciarFormulario);
 }
 
 function iniciarApp() {
 
     btnEnviar.disabled = true; 
     btnEnviar.classList.add('cursor-not-allowed', 'opacity-50')
-    
+
 }
 
 function validarForm(e) {
     
     const input = e.target.value;
 
+    //Analiza los campos que deben ser rellenados por completo
     if( input.length > 0 ) {
 
         //Elimina los errores
@@ -49,6 +53,15 @@ function validarForm(e) {
         e.target.classList.remove('border', 'border-green-500');   
         e.target.classList.add('border', 'border-red-500');         //borde del input color rojo  
         mostrarError('Todos los campos deben ser rellenados');
+    }
+
+    if( estadoMail === true && asunto.value !== '' && mensaje.value !== '') {
+        
+        btnEnviar.classList.remove('cursor-not-allowed', 'opacity-50')
+        
+    } else {
+        btnEnviar.classList.add('cursor-not-allowed', 'opacity-50')
+
     }
 
     
@@ -70,14 +83,25 @@ function validarEmail(e) {
 
             e.target.classList.remove('border', 'border-red-500');   
             e.target.classList.add('border', 'border-green-500');   //borde del input color verde  
+            
+            estadoMail = true;
 
         } else {
             e.target.classList.remove('border', 'border-green-500');   
             e.target.classList.add('border', 'border-red-500');     //borde del input color rojo  
             mostrarError('Email no válido.');
+
+            estadoMail = false;
         }
     }
 }
+
+function vaciarFormulario() {
+    destino.value = ''; 
+    asunto.value = '';
+    mensaje.value = '';
+}
+
 
 function mostrarError( mensaje ) {
 
