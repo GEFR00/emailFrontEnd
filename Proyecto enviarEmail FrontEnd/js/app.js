@@ -24,6 +24,9 @@ function cargarEventListeners() {
 
     //Vaciar formulario
     btnVaciarForm.addEventListener('click', vaciarFormulario);
+
+    //Envia formulario (simula)
+    formularioBody.addEventListener('submit', enviarEmail);
 }
 
 function iniciarApp() {
@@ -55,11 +58,14 @@ function validarForm(e) {
         mostrarError('Todos los campos deben ser rellenados');
     }
 
+    //Se habilita el boton enviar en caso de que cumpla con los parametros
     if( estadoMail === true && asunto.value !== '' && mensaje.value !== '') {
         
+        btnEnviar.disabled = false; 
         btnEnviar.classList.remove('cursor-not-allowed', 'opacity-50')
         
     } else {
+        btnEnviar.disabled = true; 
         btnEnviar.classList.add('cursor-not-allowed', 'opacity-50')
 
     }
@@ -100,6 +106,24 @@ function vaciarFormulario() {
     destino.value = ''; 
     asunto.value = '';
     mensaje.value = '';
+}
+
+function enviarEmail(e) {
+    e.preventDefault();
+
+    //Habilitando el spinner 
+    const spinner = document.querySelector('#spinner');
+    spinner.style.display = 'flex';
+
+    //Dsps de 4 seg se oculta el spinner y se muestra el mensaje
+    setTimeout( () => {
+        
+        spinner.style.display = 'none';
+
+        alert('Mensaje enviado con éxito')
+        vaciarFormulario();
+
+    }, 4000 );
 }
 
 
